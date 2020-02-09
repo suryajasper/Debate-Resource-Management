@@ -49,6 +49,11 @@ textarea:focus {
   border: 3px solid #909090;
   -webkit-transition: 0.5s;
 }
+textarea:hover {
+  background-color:#c4ccd9 ;
+  border: 3px solid #979ea4 ;
+  -webkit-transition: 0.5s;
+}
 
 .center-outside {
   text-align: center;
@@ -93,6 +98,31 @@ input[type=number] {
   padding: 12px 20px;
   font-size:14px;
 }
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+  border-radius: 4px;
+  padding: 12px 20px;
+  color: black;
+  background-color: #e3e5e8;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: rgb(175, 178, 232);
+}
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -103,11 +133,14 @@ input::-webkit-inner-spin-button {
 button {
   margin-top: 10;
   background-color:#e3e5e8;
-  border: 2px solid #e3e5e8;
+  border: none;
   border-radius: 4px;
   padding: 12px 20px;
   font-size:14px;
   cursor: pointer;
+}
+button:hover {
+  background-color: rgb(175, 178, 232);
 }
 
 input[type=button] {
@@ -129,6 +162,11 @@ input[type=password] {
 
 input[type=text]:focus {
   border: 3px solid #909090;
+  -webkit-transition: 0.5s;
+}
+input[type=text]:hover {
+  background-color:#c4ccd9 ;
+  border: 3px solid #979ea4 ;
   -webkit-transition: 0.5s;
 }
 
@@ -161,4 +199,7 @@ select {
 
 select:focus {
   outline: none;
+}
+label {
+  font-size:14px;
 }

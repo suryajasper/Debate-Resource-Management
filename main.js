@@ -1,3 +1,11 @@
+class Card {
+  constructor(title, source, content) {
+    this.title = title;
+    this.source = source;
+    this.content = content;
+  }
+}
+
 var cardButton = document.getElementById("addCard");
 var rebuttalButton = document.getElementById("addRebuttal");
 
