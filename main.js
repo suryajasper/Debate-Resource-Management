@@ -6,6 +6,8 @@ class Card {
   }
 }
 
+var cards = [];
+
 var cardButton = document.getElementById("addCard");
 var rebuttalButton = document.getElementById("addRebuttal");
 
@@ -88,6 +90,8 @@ function addCard(title, src, contentTxt) {
     sourceText.parentNode.replaceChild(link, sourceText);
     source.remove();
 
+    cards.push([legendHeader.innerHTML, link.innerHTML, content.value]);
+
     var contentText = document.createElement("p");
     contentText.innerHTML = replaceStr(content.value, "\n", "<br>");
     content.parentNode.replaceChild(contentText, content);
@@ -110,4 +114,17 @@ function addCard(title, src, contentTxt) {
 }
 
 cardButton.onclick = function() {addCard(null, null, null);};
-//addCard("Surya", "surya.com", "Surya Jasper is gay");
+
+function download() {
+  var cardClasses = [];
+  for (var i = 0; i < cards.length; i++) {
+    cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
+  }
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cardClasses)));
+  element.setAttribute('download', "debateDocs.json");
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
