@@ -16,6 +16,8 @@ var rebuttalParent = document.getElementById("rebuttalParent");
 
 var fileLabel = document.getElementById("fileLabel");
 
+var autoSave = document.getElementById("autosave");
+
 function replaceStr(str, key, rep) {
   var g = str.replace(key, rep);
   while (g.replace(key, rep) != g) {
@@ -95,8 +97,15 @@ function addCard(title, src, contentTxt) {
     var tempCardArr = [legendHeader.innerHTML, link.innerHTML, content.value];
     var cardLength = cards.length;
     cards.push(tempCardArr);
-    console.log(tempCardArr);
-    console.log('----------');
+    if (autoSave.checked) {
+      var cardClasses = [];
+      for (var i = 0; i < cards.length; i++) {
+        cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
+      }
+      window.localStorage.setItem('cards', JSON.stringify(cardClasses));
+    }
+    //console.log(tempCardArr);
+    //console.log('----------');
 
     var contentText = document.createElement("p");
     contentText.innerHTML = replaceStr(content.value, "\n", "<br>");
@@ -111,6 +120,13 @@ function addCard(title, src, contentTxt) {
     deleteButton.innerHTML = "Delete";
     deleteButton.onclick = function () {
       cards.splice(cardLength, 1);
+      if (autoSave.checked) {
+        var cardClasses = [];
+        for (var i = 0; i < cards.length; i++) {
+          cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
+        }
+        window.localStorage.setItem('cards', JSON.stringify(cardClasses));
+      }
       fieldset.remove();
     };
     fieldset.appendChild(deleteButton);
@@ -168,7 +184,13 @@ function loadFromBrowser() {
       addCard(cardArr[i].title, cardArr[i].source, cardArr[i].content);
     }
   }
+  if (window.localStorage.getItem('autoSave') != undefined) {
+    autoSave.checked = window.localStorage.getItem('autoSave') === 'true';
+  }
 }
 
 cardButton.onclick = function() {addCard(null, null, null);};
+autoSave.onchange = function() {
+  window.localStorage.setItem('autoSave', autoSave.checked.toString());
+};
 loadFromBrowser();

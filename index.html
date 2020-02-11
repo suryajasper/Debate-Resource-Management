@@ -7,13 +7,22 @@
 
 <body>
   <div class = "header">
-    <button id = "save" onclick = "saveInBrowser();">Save Data</button>
-    <button id = "download" onclick = "download();">Download Debate Resources</button>
-    <input type = "file" name = "file" id = "file" class="inputfile" onchange = "Load_Data()" ></input>
-    <label for="file" id = "fileLabel">
-      <image src = "images/upload-png-2.png" height = 20 width = 20></image>
-      Upload a file
-    </label>
+    <div id = "cache">
+      <button id = "save" onclick = "saveInBrowser();">Save Data</button>
+      <input type="checkbox" name="autosave" id = "autosave" value="isAutosaveEnabled">
+        <label for="autosave">
+          Autosave
+        </label>
+    </div>
+    <br>
+    <div id = "files">
+      <button id = "download" onclick = "download();">Download Debate Resources</button>
+      <input type = "file" name = "file" id = "file" class="inputfile" onchange = "Load_Data()" ></input>
+      <label for="file" id = "fileLabel">
+        <image src = "images/upload-png-2.png" height = 20 width = 20></image>
+        Upload a file
+      </label>
+    </div>
   </div>
 
   <h1>Cards</h1>
