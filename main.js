@@ -127,8 +127,6 @@ function addCard(title, src, contentTxt) {
   cardParent.appendChild(fieldset);
 }
 
-cardButton.onclick = function() {addCard(null, null, null);};
-
 function download() {
   var cardClasses = [];
   for (var i = 0; i < cards.length; i++) {
@@ -156,3 +154,21 @@ function Load_Data() {
   };
   reader.readAsText(event.target.files[0]);
 }
+function saveInBrowser() {
+  var cardClasses = [];
+  for (var i = 0; i < cards.length; i++) {
+    cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
+  }
+  window.localStorage.setItem('cards', JSON.stringify(cardClasses));
+}
+function loadFromBrowser() {
+  if (window.localStorage.getItem('cards') != undefined) {
+    cardArr = JSON.parse(window.localStorage.getItem('cards'));
+    for (var i = 0; i < cardArr.length; i++) {
+      addCard(cardArr[i].title, cardArr[i].source, cardArr[i].content);
+    }
+  }
+}
+
+cardButton.onclick = function() {addCard(null, null, null);};
+loadFromBrowser();
