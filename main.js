@@ -106,7 +106,7 @@ function addCard(title, src, contentTxt) {
     var cardLength = cards.length;
     cards.push(tempCardArr);
     if (autoSave.checked) {
-      saveInBrowser();
+      saveCardsInBrowser();
     }
     //console.log(tempCardArr);
     //console.log('----------');
@@ -125,7 +125,7 @@ function addCard(title, src, contentTxt) {
     deleteButton.onclick = function () {
       cards.splice(cardLength, 1);
       if (autoSave.checked) {
-        saveInBrowser();
+        saveCardsInBrowser();
       }
       fieldset.remove();
     };
@@ -217,7 +217,7 @@ function addRebuttal(title, src, contentTxt) {
     var RebutLength = rebuttals.length;
     rebuttals.push(tempRebutArr);
     if (autoSave.checked) {
-      saveInBrowser();
+      saveRebuttalsInBrowser();
     }
     //console.log(tempCardArr);
     //console.log('----------');
@@ -236,7 +236,7 @@ function addRebuttal(title, src, contentTxt) {
     deleteButton.onclick = function () {
       rebuttals.splice(RebutLength, 1);
       if (autoSave.checked) {
-        saveInBrowser();
+        saveRebuttalsInBrowser();
       }
       fieldset.remove();
     };
@@ -285,20 +285,28 @@ function Load_Data() {
   };
   reader.readAsText(event.target.files[0]);
 }
-function saveInBrowser() {
+function saveCardsInBrowser() {
   var cardClasses = [];
   for (var i = 0; i < cards.length; i++) {
     cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
   }
   window.localStorage.setItem('cards', JSON.stringify(cardClasses));
-
+}
+function saveRebuttalsInBrowser() {
   var rebutClasses = [];
   for (var i = 0; i < rebuttals.length; i++) {
     rebutClasses.push(new Rebuttal(rebuttals[i][0], rebuttals[i][1], rebuttals[i][2]));
   }
   window.localStorage.setItem('rebuttals', JSON.stringify(rebutClasses));
+}
+
+function getCards() {
+  console.log(window.localStorage.getItem('cards'));
+}
+function getRebuttals() {
   console.log(window.localStorage.getItem('rebuttals'));
 }
+
 function loadFromBrowser() {
   if (window.localStorage.getItem('cards') != undefined) {
     cardArr = JSON.parse(window.localStorage.getItem('cards'));
@@ -308,8 +316,8 @@ function loadFromBrowser() {
   }
   if (window.localStorage.getItem('rebuttals') != undefined) {
     rebutArr = JSON.parse(window.localStorage.getItem('rebuttals'));
+    console.log("loading a rebuttal");
     for (var i = 0; i < rebutArr.length; i++) {
-      console.log("loading a rebuttal");
       addRebuttal(rebutArr[i].title, rebutArr[i].source, rebutArr[i].content);
     }
   }
