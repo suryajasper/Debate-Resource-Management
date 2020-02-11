@@ -35,6 +35,18 @@ function replaceStr(str, key, rep) {
   return g;
 }
 
+function createSelect(values, name) {
+  var select = document.createElement("select");
+  select.required = true;
+  for (var i = 0; i < values.length; i++) {
+    var option = document.createElement("option");
+    option.value = values[i];
+    option.innerHTML = values[i];
+    select.appendChild(option);
+  }
+  return select;
+}
+
 function addCard(title, src, contentTxt) {
   var editable = title == null;
 
@@ -170,6 +182,14 @@ function addRebuttal(title, src, contentTxt) {
   legend.appendChild(legendInput);
   fieldset.appendChild(legend);
 
+  var select = createSelect(["Aff", "Neg"], "side");
+  var labelSelect = document.createElement("label");
+  labelSelect.for = "side";
+  labelSelect.innerHTML = "Side for rebuttal";
+
+  fieldset.appendChild(labelSelect);
+  fieldset.appendChild(select);
+
   // Creating body for the fieldset
   var sourceText = document.createElement("h4");
   sourceText.innerHTML = "Enter the web URL: ";
@@ -206,6 +226,16 @@ function addRebuttal(title, src, contentTxt) {
   function create() {
     legendHeader.innerHTML = legendInput.value;
     legendInput.remove();
+
+    labelSelect.innerHTML = "Side: " + select.value;
+    labelSelect.style.display = "block";
+    if (select.value === "Neg") {
+      labelSelect.style.color = "rgb(129, 21, 21)";
+    } else if (select.value === "Aff") {
+      labelSelect.style.color = "rgb(33, 55, 147)";
+    }
+    labelSelect.style.fontSize = 17;
+    select.remove();
 
     var link = document.createElement("a");
     link.innerHTML = source.value;
