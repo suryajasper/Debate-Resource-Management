@@ -14,6 +14,8 @@ var rebuttalButton = document.getElementById("addRebuttal");
 var cardParent = document.getElementById("cardParent");
 var rebuttalParent = document.getElementById("rebuttalParent");
 
+var fileLabel = document.getElementById("fileLabel");
+
 function replaceStr(str, key, rep) {
   var g = str.replace(key, rep);
   while (g.replace(key, rep) != g) {
@@ -37,9 +39,9 @@ function addCard(title, src, contentTxt) {
   var legendInput = document.createElement("input");
   legendInput.type = "text";
   if (editable) {
-    legendInput.innerHTML = "";
+    legendInput.value = "";
   } else {
-    legendInput.innerHTML = title;
+    legendInput.value = title;
   }
   legend.appendChild(legendInput);
   fieldset.appendChild(legend);
@@ -53,9 +55,9 @@ function addCard(title, src, contentTxt) {
   source.type = "text";
   source.innerHTML = "Source of card";
   if (editable) {
-    source.innerHTML = "Source of card";
+    source.value = "Source of card";
   } else {
-    source.innerHTML = src;
+    source.value = src;
   }
   fieldset.appendChild(source);
 
@@ -90,7 +92,11 @@ function addCard(title, src, contentTxt) {
     sourceText.parentNode.replaceChild(link, sourceText);
     source.remove();
 
-    cards.push([legendHeader.innerHTML, link.innerHTML, content.value]);
+    var tempCardArr = [legendHeader.innerHTML, link.innerHTML, content.value];
+    var cardLength = cards.length;
+    cards.push(tempCardArr);
+    console.log(tempCardArr);
+    console.log('----------');
 
     var contentText = document.createElement("p");
     contentText.innerHTML = replaceStr(content.value, "\n", "<br>");
@@ -100,6 +106,14 @@ function addCard(title, src, contentTxt) {
       brArr[i].remove();
     }
     brArr = [];
+
+    var deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = function () {
+      cards.splice(cardLength, 1);
+      fieldset.remove();
+    };
+    fieldset.appendChild(deleteButton);
 
     createButton.remove();
   }
@@ -127,4 +141,18 @@ function download() {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
+}
+function Load_Data() {
+  var reader = new FileReader();
+  reader.onload = function(event) {
+    console.log(event.target.result);
+    var json = JSON.parse(event.target.result);
+    for (var i = 0; i < json.length; i++) {
+      var title = json[i].title;
+      var source = json[i].source;
+      var content = json[i].content;
+      addCard(title, source, content);
+    }
+  };
+  reader.readAsText(event.target.files[0]);
 }
