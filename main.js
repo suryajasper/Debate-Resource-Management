@@ -82,8 +82,7 @@ function addCard(title, src, contentTxt) {
 
   //create the element
   fieldset.appendChild(brArr[2]);
-  var createButton = document.createElement("button");
-  createButton.innerHTML = "Create";
+
   function create() {
     legendHeader.innerHTML = legendInput.value;
     legendInput.remove();
@@ -130,15 +129,20 @@ function addCard(title, src, contentTxt) {
       fieldset.remove();
     };
     fieldset.appendChild(deleteButton);
-
-    createButton.remove();
+    try {
+      createButton.remove();
+    }
+    catch (error) { }
   }
-  createButton.onclick = create;
-  if (!editable) {
+  if (editable) {
+    var createButton = document.createElement("button");
+    createButton.innerHTML = "Create";
+    createButton.onclick = create;
+    fieldset.appendChild(createButton);
+  }
+  else {
     create();
   }
-
-  fieldset.appendChild(createButton);
 
   cardParent.appendChild(fieldset);
 }
