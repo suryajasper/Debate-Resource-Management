@@ -27,6 +27,9 @@ var fileLabel = document.getElementById("fileLabel");
 
 var autoSave = document.getElementById("autosave");
 
+var searchField = document.getElementById("searchField");
+var searchButton = document.getElementById("searchButton");
+
 function replaceStr(str, key, rep) {
   var g = str.replace(key, rep);
   while (g.replace(key, rep) != g) {
@@ -356,9 +359,66 @@ function loadFromBrowser() {
   }
 }
 
+function Search(keyword) {
+  var cardClasses = [];
+  for (var i = 0; i < cards.length; i++) {
+    cardClasses.push(new Card(cards[i][0], cards[i][1], cards[i][2]));
+  }
+  var rebutClasses = [];
+  for (var i = 0; i < rebuttals.length; i++) {
+    rebutClasses.push(new Rebuttal(rebuttals[i][0], rebuttals[i][1], rebuttals[i][2]));
+  }
+
+  var cardFieldsets = [];
+  var rebutFieldsets = [];
+
+  keywordArr = keyword.split(' ');
+  console.log(keywordArr);
+  console.log(cardClasses);
+
+  for (var i = 0; i < keywordArr.length; i++) {
+    for (var j = 0; j < cardClasses.length; j++) {
+      if (cardClasses[j].title.includes(keywordArr[i]) || cardClasses[j].source.includes(keywordArr[i]) || cardClasses[j].content.includes(keywordArr[i])) {
+        var title = cardClasses[j].title;
+        for (var k = 0; k < cardParent.children.length; k++) {
+          if (!(cardParent.children[k].children[0].children[0].innerHTML === title)) {
+            cardFieldsets.push(cardParent.children[k]);
+            //cardParent.children[k].remove();
+          }
+        }
+      }
+    }
+  }
+
+  for (var i = 0; i < keywordArr.length; i++) {
+    for (var j = 0; j < rebutClasses.length; j++) {
+      if (rebutClasses[j].title.includes(keywordArr[i]) || rebutClasses[j].source.includes(keywordArr[i]) || rebutClasses[j].content.includes(keywordArr[i])) {
+        var title = rebutClasses[j].title;
+        for (var k = 0; k < rebuttalParent.children.length; k++) {
+          if (!(rebuttalParent.children[k].children[0].children[0].innerHTML === title)) {
+            rebutFieldsets.push(rebuttalParent.children[k]);
+            //rebuttalParent.children[k].remove();
+          }
+        }
+      }
+    }
+  }
+
+  console.log("searched " + keyword)
+  console.log("rebut " + rebutFieldsets.length.toString());
+  console.log("card  " + cardFieldsets.length.toString() );
+  console.log(cardFieldsets);
+}
+
+
 cardButton.onclick = function() {addCard(null, null, null);};
 rebuttalButton.onclick = function() {addRebuttal(null, null, null);};
 autoSave.onchange = function() {
   window.localStorage.setItem('autoSave', autoSave.checked.toString());
 };
+
+searchButton.onclick = function () {
+  Search(searchField.value);
+};
+
 loadFromBrowser();
